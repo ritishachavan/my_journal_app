@@ -1,0 +1,11 @@
+name: _
+publish_to: none
+
+environment:
+  sdk: '^3.8.0'
+
+workspace:
+  - my_journal_app_client
+  - my_journal_app_server
+  - my_journal_app_flutter
+

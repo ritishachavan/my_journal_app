@@ -1,0 +1,10 @@
+class: UserInfo
+table: user_info
+fields:
+  email: String?
+  phoneNumber: String?
+  passwordHash: String
+  uniqueString: String
+  isVerified: bool
+  otpCode: String?
+  otpExpiry: DateTime?

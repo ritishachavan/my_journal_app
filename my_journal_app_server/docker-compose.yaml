@@ -1,0 +1,44 @@
+services:
+  # Development services
+  postgres:
+    image: pgvector/pgvector:pg16
+    ports:
+      - "8090:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: my_journal_app
+      POSTGRES_PASSWORD: "72yu_iTKTf7HIapTEli7DH8x6hVShlld"
+    volumes:
+      - my_journal_app_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:6.2.6
+    ports:
+      - "8091:6379"
+    command: redis-server --requirepass "Jvcs1e-uyyeKYDGS35DEusor07yC1Ug-"
+    environment:
+      - REDIS_REPLICATION_MODE=master
+
+  # Test services
+  postgres_test:
+    image: pgvector/pgvector:pg16
+    ports:
+      - "9090:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: my_journal_app_test
+      POSTGRES_PASSWORD: "htqI_lTYvFQfNu-toulmhpo5gTyvu_iK"
+    volumes:
+      - my_journal_app_test_data:/var/lib/postgresql/data
+
+  redis_test:
+    image: redis:6.2.6
+    ports:
+      - "9091:6379"
+    command: redis-server --requirepass "4bAhw_julrRdLJ9XlT7mWxObP5xMZjtf"
+    environment:
+      - REDIS_REPLICATION_MODE=master
+
+volumes:
+  my_journal_app_data:
+  my_journal_app_test_data:

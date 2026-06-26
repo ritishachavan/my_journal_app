@@ -1,0 +1,7 @@
+class: JournalEntry
+table: journal_entries
+fields:
+  userInfoId: int
+  title: String
+  content: String
+  createdAt: DateTime
