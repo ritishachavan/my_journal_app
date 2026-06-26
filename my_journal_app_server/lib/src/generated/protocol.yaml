@@ -12,6 +12,7 @@ jwtRefresh:
 auth:
   - register:
   - login:
+  - verifyOtp:
 journal:
   - saveEntry:
   - getAllEntries:

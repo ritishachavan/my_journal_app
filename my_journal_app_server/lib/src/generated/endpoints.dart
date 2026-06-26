@@ -273,6 +273,11 @@ class Endpoints extends _i1.EndpointDispatch {
               type: _i1.getType<String>(),
               nullable: false,
             ),
+            'phoneNumber': _i1.ParameterDescription(
+              name: 'phoneNumber',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
             'password': _i1.ParameterDescription(
               name: 'password',
               type: _i1.getType<String>(),
@@ -286,6 +291,7 @@ class Endpoints extends _i1.EndpointDispatch {
               ) async => (endpoints['auth'] as _i4.AuthEndpoint).register(
                 session,
                 params['email'],
+                params['phoneNumber'],
                 params['password'],
               ),
         ),
@@ -311,6 +317,30 @@ class Endpoints extends _i1.EndpointDispatch {
                 session,
                 params['email'],
                 params['password'],
+              ),
+        ),
+        'verifyOtp': _i1.MethodConnector(
+          name: 'verifyOtp',
+          params: {
+            'email': _i1.ParameterDescription(
+              name: 'email',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+            'enteredOtp': _i1.ParameterDescription(
+              name: 'enteredOtp',
+              type: _i1.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _i1.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['auth'] as _i4.AuthEndpoint).verifyOtp(
+                session,
+                params['email'],
+                params['enteredOtp'],
               ),
         ),
       },

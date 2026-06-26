@@ -252,12 +252,14 @@ class EndpointAuth extends _i2.EndpointRef {
 
   _i3.Future<bool> register(
     String email,
+    String phoneNumber,
     String password,
   ) => caller.callServerEndpoint<bool>(
     'auth',
     'register',
     {
       'email': email,
+      'phoneNumber': phoneNumber,
       'password': password,
     },
   );
@@ -271,6 +273,18 @@ class EndpointAuth extends _i2.EndpointRef {
     {
       'email': email,
       'password': password,
+    },
+  );
+
+  _i3.Future<bool> verifyOtp(
+    String email,
+    String enteredOtp,
+  ) => caller.callServerEndpoint<bool>(
+    'auth',
+    'verifyOtp',
+    {
+      'email': email,
+      'enteredOtp': enteredOtp,
     },
   );
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_journal_app_client/my_journal_app_client.dart';
-import '../journal_page.dart'; // Or 'screens/journal_page.dart' if it is in that folder
+import 'package:my_journal_app_client/my_journal_app_client.dart'; // Adjust if your client package name differs
+import 'otp_verification_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   final Client client;
@@ -12,50 +12,56 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _isRegistering = true; // Toggle between Login/Register
 
   Future<void> _submit() async {
-  try {
-    if (_isRegistering) {
-      await widget.client.auth.register(_emailController.text, _passwordController.text);
-      // Optional: Show a snackbar saying "Registration successful, please login"
-    } else {
-      var user = await widget.client.auth.login(_emailController.text, _passwordController.text);
-      
-      if (user != null) {
-        // --- PUT THE NAVIGATION CODE HERE ---
-        if (!mounted) return; // Always good practice in Flutter
-        Navigator.pushReplacement(
-          context, 
+    try {
+      bool success = await widget.client.auth.register(
+        _emailController.text,
+        _phoneController.text,
+        _passwordController.text,
+      );
+
+      if (success && mounted) {
+        Navigator.push(
+          context,
           MaterialPageRoute(
-            builder: (context) => JournalPage(
-              client: widget.client, 
-              userId: user.id!,
+            builder: (context) => OtpVerificationScreen(
+              client: widget.client,
+              email: _emailController.text,
             ),
           ),
         );
-      } else {
-        print("Login failed.");
       }
+    } catch (e) {
+      debugPrint('Registration error: $e');
     }
-  } catch (e) {
-    print("Error: $e");
   }
-}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(_isRegistering ? "Register" : "Sign In")),
+      appBar: AppBar(title: const Text("Register")),
       body: Column(
         children: [
-          TextField(controller: _emailController, decoration: const InputDecoration(hintText: "Email")),
-          TextField(controller: _passwordController, obscureText: true, decoration: const InputDecoration(hintText: "Password")),
-          ElevatedButton(onPressed: _submit, child: Text(_isRegistering ? "Register" : "Login")),
-          TextButton(
-            onPressed: () => setState(() => _isRegistering = !_isRegistering),
-            child: Text(_isRegistering ? "Already have an account? Login" : "Need an account? Register"),
+          TextField(
+            controller: _emailController,
+            decoration: const InputDecoration(labelText: "Email"),
+          ),
+          TextField(
+            controller: _phoneController,
+            decoration: const InputDecoration(labelText: 'Phone Number (e.g. +14155552671)'),
+            keyboardType: TextInputType.phone,
+          ),
+          TextField(
+            controller: _passwordController,
+            decoration: const InputDecoration(labelText: "Password"),
+            obscureText: true,
+          ),
+          ElevatedButton(
+            onPressed: _submit,
+            child: const Text("Register"),
           ),
         ],
       ),
